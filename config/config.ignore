@@ -1,0 +1,4 @@
+{
+    "matchDetailsApiPort": ":5000",
+    "mongoAddress": "mongodb://localhost:27017"
+}
