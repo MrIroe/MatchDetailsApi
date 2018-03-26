@@ -29,7 +29,7 @@ func InitMongoRepo() {
 	primarySess.SetMode(mgo.Monotonic, true)
 }
 
-func GetSummonerStats(accountId int64) (*[]obj.SummonerMatchStats, error) {
+func GetSummonerStats(accountId int64) ([]obj.SummonerMatchStats, error) {
 	localSess := *primarySess.Clone()
 	defer localSess.Close()
 	c := localSess.DB(entityDbName).C(summonerStatsColName)
@@ -37,8 +37,8 @@ func GetSummonerStats(accountId int64) (*[]obj.SummonerMatchStats, error) {
 	var summonerStats []obj.SummonerMatchStats
 	err := c.Find(bson.M{"AccountId": accountId}).All(&summonerStats)
 	if err != nil {
-		return nil, errors.Wrap(err, "Error getting SummonerMatchStats")
+		return []obj.SummonerMatchStats{}, errors.Wrap(err, "Error getting SummonerMatchStats")
 	}
 
-	return &summonerStats, nil
+	return summonerStats, nil
 }

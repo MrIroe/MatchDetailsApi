@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 
 	mongo "matchDetailsApi/mongo"
+	util "matchDetailsApi/util"
 )
 
 func RegisterMatchDetailsHandlers(router *mux.Router, route string) {
@@ -30,6 +31,15 @@ func GetMatchDetails(w http.ResponseWriter, req *http.Request) {
 		errLog := fmt.Sprintf("Error in GetMatchDetails: %v", err)
 		WriteResponse(w, 400, false, errLog, nil)
 		return
+	}
+
+	for _, stats := range summonerMatchStats {
+		creeps, csDiff, expDiff, err := util.AverageDeltas(stats.Timeline)
+		if err != nil {
+			fmt.Printf("Error averaging deltas for matchId: %v", stats.MatchId)
+		}
+
+		fmt.Println(creeps, csDiff, exp)
 	}
 	fmt.Println(summonerMatchStats)
 }
