@@ -10,6 +10,8 @@ import (
 
 func WriteResponse(w http.ResponseWriter, statusCode int, success bool, message string, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	payload, err := GetResponsePayload(success, message, data)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

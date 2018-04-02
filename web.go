@@ -20,6 +20,7 @@ func StartWeb() {
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
+	controllers.RegisterMatchDetailsHandlers(router, "/matchDetailsApi")
 	// controllers.RegisterSummonerHandlers(router, "/summoner")
 	router.HandleFunc("/", handleInvalidPath)
 
