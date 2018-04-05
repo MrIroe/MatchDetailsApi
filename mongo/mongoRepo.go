@@ -35,7 +35,7 @@ func GetSummonerStatsByQueue(accountId int64, queue int) ([]obj.SummonerMatchSta
 	c := localSess.DB(entityDbName).C(summonerStatsColName)
 
 	var summonerStats []obj.SummonerMatchStats
-	err := c.Find(bson.M{"$and": []bson.M{bson.M{"AccountId": accountId}, bson.M{"Queue": queue}}}).All(&summonerStats)
+	err := c.Find(bson.M{"$and": []bson.M{bson.M{"AccountId": accountId}, bson.M{"QueueId": queue}}}).All(&summonerStats)
 	if err != nil {
 		return []obj.SummonerMatchStats{}, errors.Wrap(err, "Error getting SummonerMatchStats")
 	}
