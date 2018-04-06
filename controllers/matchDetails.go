@@ -44,6 +44,15 @@ func GetMatchAllDetails(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	championInfo, err := mongo.GetChampionInfo()
+	if err != nil {
+		errLog := fmt.Sprintf("Error in GetMatchDetails: %v", err)
+		WriteResponse(w, 400, false, errLog, nil)
+		return
+	}
+
+	championInfoMap := util.BuildChampionMap(championInfo)
+
 	var returnMatchDetails []obj.MatchDetails
 
 	for _, stats := range summonerMatchStats {
@@ -53,6 +62,7 @@ func GetMatchAllDetails(w http.ResponseWriter, req *http.Request) {
 		}
 
 		matchDetails := obj.MatchDetails{
+			Champion:                       championInfoMap[stats.ChampionId],
 			PhysicalDamageDealt:            stats.Stats.PhysicalDamageDealt,
 			MagicDamageDealt:               stats.Stats.MagicDamageDealt,
 			Deaths:                         stats.Stats.Deaths,
@@ -115,6 +125,15 @@ func GetMatchDetailsByQueue(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	championInfo, err := mongo.GetChampionInfo()
+	if err != nil {
+		errLog := fmt.Sprintf("Error in GetMatchDetails: %v", err)
+		WriteResponse(w, 400, false, errLog, nil)
+		return
+	}
+
+	championInfoMap := util.BuildChampionMap(championInfo)
+
 	var returnMatchDetails []obj.MatchDetails
 
 	for _, stats := range summonerMatchStats {
@@ -124,6 +143,7 @@ func GetMatchDetailsByQueue(w http.ResponseWriter, req *http.Request) {
 		}
 
 		matchDetails := obj.MatchDetails{
+			Champion:                       championInfoMap[stats.ChampionId],
 			PhysicalDamageDealt:            stats.Stats.PhysicalDamageDealt,
 			MagicDamageDealt:               stats.Stats.MagicDamageDealt,
 			Deaths:                         stats.Stats.Deaths,

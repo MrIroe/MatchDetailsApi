@@ -6,6 +6,7 @@ type MatchDetailFilter struct {
 }
 
 type MatchDetails struct {
+	Champion                       string  `json:"champion"`
 	PhysicalDamageDealt            int64   `json:"physicalDamageDealt"`
 	MagicDamageDealt               int64   `json:"magicDamageDealt"`
 	Deaths                         int     `json:"deaths"`

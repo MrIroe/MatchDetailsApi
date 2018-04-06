@@ -11,3 +11,12 @@ func AverageDeltas(timeline obj.ParticipantTimelineDto) (float64, float64, float
 
 	return creepsPerMin, csDiff, expDiff
 }
+
+func BuildChampionMap(champInfo []obj.ChampionInfo) map[int]string {
+	championMap := make(map[int]string)
+	for _, info := range champInfo {
+		championMap[info.Id] = info.Name
+	}
+
+	return championMap
+}

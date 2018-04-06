@@ -17,6 +17,7 @@ var primarySess *mgo.Session
 const entityDbName = "Entities"
 const summonerColName = "Summoners"
 const summonerStatsColName = "SummonerStats"
+const championColName = "Champions"
 
 func InitMongoRepo() {
 	var err error
@@ -37,7 +38,7 @@ func GetSummonerStatsByQueue(accountId int64, queue int) ([]obj.SummonerMatchSta
 	var summonerStats []obj.SummonerMatchStats
 	err := c.Find(bson.M{"$and": []bson.M{bson.M{"AccountId": accountId}, bson.M{"QueueId": queue}}}).All(&summonerStats)
 	if err != nil {
-		return []obj.SummonerMatchStats{}, errors.Wrap(err, "Error getting SummonerMatchStats")
+		return nil, errors.Wrap(err, "Error getting SummonerMatchStats")
 	}
 
 	return summonerStats, nil
@@ -51,8 +52,22 @@ func GetAllSummonerStats(accountId int64) ([]obj.SummonerMatchStats, error) {
 	var summonerStats []obj.SummonerMatchStats
 	err := c.Find(bson.M{"AccountId": accountId}).All(&summonerStats)
 	if err != nil {
-		return []obj.SummonerMatchStats{}, errors.Wrap(err, "Error getting SummonerMatchStats")
+		return nil, errors.Wrap(err, "Error getting SummonerMatchStats")
 	}
 
 	return summonerStats, nil
+}
+
+func GetChampionInfo() ([]obj.ChampionInfo, error) {
+	localSess := *primarySess.Clone()
+	defer localSess.Close()
+	c := localSess.DB(entityDbName).C(championColName)
+
+	var championInfo []obj.ChampionInfo
+	err := c.Find(nil).All(&championInfo)
+	if err != nil {
+		return nil, errors.Wrap(err, "Error getting SummonerMatchStats")
+	}
+
+	return championInfo, nil
 }
